@@ -1,0 +1,73 @@
+.project-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.proj-img {
+  margin-top: 20px;
+  width: 100%;          /* prevents infinite stretching */
+}
+
+.slide-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+  height: 100%;         /* keeps slide from collapsing */
+}
+
+.carousel-img {
+  width: 100%;
+  height: 200px;        /* fixed height for uniformity */
+  object-fit: cover;    /* prevents distortion */
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* Learn More Button */
+.slide-card button {
+  padding: 8px 15px;
+  border: none;
+  background: #0077cc;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.slide-card button:hover {
+  background: #005fa3;
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-content img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}

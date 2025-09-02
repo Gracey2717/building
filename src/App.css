@@ -1,38 +1,428 @@
-.App {
-  text-align: center;
+* {
+  font-family: "Poppins", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Reset (should be at top of file) */
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* Navbar container */
+.navbar {
+  display: flex;
+  justify-content: space-between; /* logo left, links right */
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #32335d;
+  color: #ded3c4;
+  position: fixed; /* stays at top while scrolling */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* always on top */
+}
+
+/* Logo */
+.logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Links container */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+/* Links */
+.nav-links a {
+  color: #ded3c4;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: rgb(240, 165, 0);
+}
+
+/* Hamburger / menu toggle */
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  font-size: 1.8rem;
+  color: #ded3c4;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none; /* hide links initially */
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* below navbar */
+    right: 20px;
+    background: #32335d;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .nav-links.open {
+    display: flex; /* show when toggled */
+  }
+
+  .menu-toggle {
+    display: block; /* show hamburger */
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.hero {
+  height: 100vh;
+  background:
+    linear-gradient(to right, #fff2e0, #898ac4);
+  background-size: contain, cover;
+  display: flex;
+  align-items: center;
+  padding-left: 50px;
+  margin-top: 0;
+}
+
+.hero-text {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* space between heading and paragraph */
+}
+
+.hero-text h1 {
+  font-size: 4rem; /* bigger text */
+  font-weight: bold;
+}
+
+.hero-text p {
+  font-size: 2rem; /* smaller text */
+  color: #32335d;
+}
+@media (max-width: 768px) {
+  .hero {
+    padding: 20px;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .hero-image {
+    width: 200px;
+    height: 100%; /* shrink but stays on right */
+  }}
+.hero-text {
+  max-width: 600px;
+}
+
+.hero-img img {
+  max-width: 100%;
+  height: 100vh;
+}
+
+/* 🎯 Mobile view: stack text above image */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;   /* stack instead of side by side */
+    text-align: center;
+    height: auto; /* let content decide height */
+  }
+
+  .hero-text {
+    margin-top: 40px;
+    margin-bottom: 20px; /* space between text and image */
+  }
+
+  .hero-img img {
+    width: 100%;   /* make image full width */
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+.about-container {
+  display: flex;
+  align-items: flex-start; /* Push text to the top */
+  justify-content: flex-start; /* Keep text aligned to the left */
+  flex-direction: column;
+  padding: 40px 20px;
+  color: #ded3c4;
+  background: #32335d url("./Assets/aboutimg.png");
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: contain;
+}
+.about-text {
+  max-width: 400px;
+}
+
+.about-container h2 {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.about-container p {
+  font-size: 1.6rem;
+  color: #ded3c4;
+}
+.about-images {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-left: 50px;
+  width: 400px;
+  height: 400px;
+}
+.button {
+  display: inline-block;
+  background: #ded3c4;
+  color: white;
+  padding: 10px 20px;
+  margin-top: 50px;
+  border-radius: 6px;
+  text-decoration: none; /* removes underline */
+}
+
+.button.active {
+  background:#32335d;
+}
+.project-container{
+    height: 100vh;
+  background:
+    linear-gradient(to right, #fff2e0, #898ac4);
+  background-size: contain, cover;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-left: 50px;
+  margin-top: 0px;
+}
+.project-text {
+  max-width: 800px;
+  text-align: center;
+  margin: 40px;
+}
+.services-section {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.services-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.service-slide {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.6); /* makes image a bit dim (opacity effect) */
+  transition: all 1s ease-in-out;
+}
+
+/* The text stays on top of all slides */
+.services-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  color: #fff;
+}
+
+.services-text h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.services-text p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* 📱 Mobile responsiveness */
+@media (max-width: 768px) {
+  .services-text h2 {
+    font-size: 2rem;
+  }
+  .services-text p {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+}
+
+
+.testimonials-container {
+  background: #32335d;
+  padding: 50px 20px;
+  text-align: center;
+  color: #ded3c4 ;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.testimonial-card {
+  background: #f9f1e5;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.testimonial-img {
+  width: 80px;
+  height: 80px;
+  background: #ddd; /* placeholder for image */
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.testimonial-text {
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.testimonial-author {
+  font-weight: bold;
+  color: #32335d;
+}
+
+.footer-container {
+  padding: 20px;
+  background-color: #32335d;
+  color: #ded3c4;
+  text-align: center;
+}
+/* Overlay: covers whole screen with blur + dark background */
+/* src/components/AuthModal.css */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6); /* blur/dark overlay */
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  z-index: 999;
+}
+
+.modal-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-title {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  flex: 1;
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sign-up {
+  background: #4caf50;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.log-in {
+  background: #2196f3;
+  color: white;
+}
+/* Tabs container */
+.tab-header {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  color: #555;
+}
+
+.tab-btn.active {
+  border-bottom: 3px solid #2196f3;
+  font-weight: bold;
+  color: #2196f3;
+}
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
 }
