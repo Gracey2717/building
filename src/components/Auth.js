@@ -4,7 +4,7 @@ import { supabase } from "../supabase-clients";
 // -------------------
 // Sign Up
 // -------------------
-export async function signUp(email, password) {
+export async function signUp(email, password, role = "user") {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -15,15 +15,15 @@ export async function signUp(email, password) {
     return null;
   }
 
-  // Save profile in "profiles" table
   if (data.user) {
+    // Save profile in "profiles" table with role
     await supabase.from("profiles").insert([
-      { id: data.user.id, email: data.user.email },
+      { id: data.user.id, email: data.user.email, role },
     ]);
   }
 
   console.log("User signed up:", data.user);
-  return data.user; // return only the user
+  return data.user; // still return the user object
 }
 
 // -------------------
@@ -40,15 +40,22 @@ export async function logIn(email, password) {
     return null;
   }
 
-  // Ensure profile exists (insert or update)
-  if (data.user) {
-    await supabase.from("profiles").upsert([
-      { id: data.user.id, email: data.user.email },
-    ]);
+  if (!data.user) return null;
+
+  // Fetch profile including role
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("id, email, role")
+    .eq("id", data.user.id)
+    .maybeSingle();
+
+  if (profileError) {
+    console.error("Error fetching profile:", profileError.message);
+    return null;
   }
 
-  console.log("User logged in:", data.user);
-  return data.user; // return only the user
+  console.log("User logged in with profile:", profile);
+  return profile; // return the profile including role
 }
 
 // -------------------

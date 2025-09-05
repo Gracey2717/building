@@ -11,7 +11,7 @@ import "swiper/css/navigation"
 import { Navigation } from "swiper/modules"
 import "./Project.css"
 
-function Project() {
+function Project({ user }) {   // ✅ accept user as a prop
   const [selectedProject, setSelectedProject] = useState(null)
 
   const projects = [
@@ -31,6 +31,11 @@ function Project() {
           from residential buildings.
         </h1>
       </div>
+
+      {/* ✅ Only admins see the Upload button */}
+      {user?.role === "admin" && (
+        <button className="upload-btn">Upload Image</button>
+      )}
 
       {/* Carousel with arrows */}
       <Swiper
