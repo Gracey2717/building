@@ -9,7 +9,7 @@ function Navbar() {
       <div className="logo">
         <img src={Logo} alt="PJ CREW Logo" className="logo-img" />
       
-      <h2 className="logo-text">P&J CREW</h2>
+      <h2 className="logo-text">PJ & CREW</h2>
        </div>
       <ul className="nav-links" style={{ display: open ? "flex" : "" }}>
         <li>
