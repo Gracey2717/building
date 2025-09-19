@@ -1,73 +1,252 @@
+/* Global box sizing (prevents weird overflow calculations) */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* === Wrapper === */
+.project-section {
+  background: linear-gradient(to right, #fff2e0, #898ac4);
+  position: relative;
+  font-family: "Arial", sans-serif;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* === Top Services Background Slider === */
+.services-section {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+}
+
+.services-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  color: #ded3c4;
+}
+
+.services-text h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.services-text p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+.services-section .swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.service-slide {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* === Projects Carousel Section === */
 .project-container {
-  padding: 20px;
+  width: 90%;
+  max-width: 1200px; /* constrain overall width */
+  margin: 0 auto;
+}
+
+/* IMPORTANT: ensure Swiper wrapper doesn't force weird heights */
+.proj-img {
+  padding: 20px 0;
+  height: auto !important;
+  overflow: visible; /* allow slides to be visible without clipping */
+}
+
+/* Ensure slides themselves act like columns and do not stretch the wrapper */
+.proj-img .swiper-slide {
+  display: flex;
+  justify-content: center; /* center card inside the slide */
+  align-items: flex-start;
+  height: auto;
+  /* remove any hacks that change slide width directly */
+  width: auto !important;
+}
+
+/* Constrain card width so it can't blow out horizontally.
+   Swiper will still compute slide width but the visible card size is capped. */
+.proj-img .swiper-slide .slide-card {
+  width: 100%;
+  max-width: 360px; /* <-- control how wide each card can get */
+  box-sizing: border-box;
+}
+/* Style the pagination dots under services slider */
+.services-section .swiper-pagination {
+  bottom: 15px !important;  /* move above bottom edge */
   text-align: center;
 }
 
-.proj-img {
-  margin-top: 20px;
-  width: 100%; /* prevents infinite stretching */
+.services-section .swiper-pagination-bullet {
+  background: #fff;   /* default color */
+  opacity: 0.6;
+  transition: all 0.3s ease;
 }
 
+.services-section .swiper-pagination-bullet-active {
+  background: #555; /* your brand color */
+  opacity: 1;
+  transform: scale(1.2); /* make active dot bigger */
+}
+
+/* Card visual */
 .slide-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: #f9f9f9;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-  height: 100%; /* keeps slide from collapsing */
+  gap: 10px;
+  height: 100%;
+  /* don't force a fixed height here - card height will be based on content,
+     but the image area is reserved below so cards won't suddenly expand. */
+}
+
+/* Image: reserve space using aspect-ratio to avoid layout shift */
+.slide-card img.carousel-img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9; /* reserves a consistent area before image loads */
+  object-fit: cover; /* crop without distortion */
+  border-radius: 8px;
+}
+
+/* Title & description */
+.slide-card h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.slide-card p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+  /* limit text so long descriptions don't grow the card vertically */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Buttons */
+.slide-card button,
+.bttn {
+  background: #898ac4;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.slide-card button:hover,
+.bttn:hover {
+  background: #32335d;
+}
+
+.bttn {
+  display: block; /* Makes it behave like a block so you can center */
+  margin: 40px auto; /* Centers the button horizontally + adds spacing */
+  padding: 14px 30px; /* Inner spacing for size */
+  background: #898ac4; /* Dark gray background */
+  color: #fff; /* White text */
+  font-size: 1.1rem; /* Slightly larger text */
+  font-weight: bold; /* Bold text */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer; /* Pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: all 0.3s ease; /* Smooth hover effect */
+}
+
+.bttn:hover {
+  background-color: #32335d; /* Darker gray on hover */
+  transform: translateY(-2px); /* Slight lift */
+}
+
+.bttn:active {
+  transform: translateY(0); /* Reset on click */
+}
+
+/* Small screens: fewer slides per view - do NOT set .swiper-slide width hacks */
+@media (max-width: 1024px) {
+  .services-section {
+    height: 280px;
+  }
+  .proj-img .swiper-slide .slide-card {
+    max-width: 320px;
+  }
+  .slide-card img.carousel-img {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-section {
+    height: 220px;
+  }
+
+  /* Let the card be full width of the small slide */
+  .proj-img .swiper-slide .slide-card {
+    max-width: 100%;
+    padding: 12px;
+  }
+  .slide-card img.carousel-img {
+    aspect-ratio: 16 / 9;
+  }
+}
+/* Default card style */
+.slide-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.slide-card:hover {
+  transform: translateY(-5px);
 }
 
 .carousel-img {
   width: 100%;
-  height: 200px; /* fixed height for uniformity */
-  object-fit: cover; /* prevents distortion */
-  border-radius: 10px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
   margin-bottom: 10px;
 }
 
-/* Learn More Button */
-.slide-card button {
-  padding: 8px 15px;
-  border: none;
-  background: #0077cc;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-.slide-card button:hover {
-  background: #005fa3;
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .carousel-img {
+    height: 150px;
+  }
 }
 
-/* Modal Styling */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
-  text-align: center;
-}
-
-.modal-content img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 15px;
+@media (max-width: 480px) {
+  .carousel-img {
+    height: 120px;
+  }
 }

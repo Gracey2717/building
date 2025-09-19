@@ -1,77 +1,132 @@
-import React, { useState } from "react"
-import ProjImg from "../Assets/Services5.jpg"
-import ProjImg2 from "../Assets/Projectspic.png"
-import Prof from "../Assets/Professionalpic.jpg"
-import ProjImg3 from "../Assets/Buildings.jpg"
-import ProjImg4 from "../Assets/Building2.jpg"
-import AboutNew from "../Assets/Aboutnew.jpg"
-import { Swiper, SwiperSlide } from "swiper/react"
-import "swiper/css"
-import "swiper/css/navigation"
-import { Navigation } from "swiper/modules"
-import "./Project.css"
+// src/pages/Project.js
+import React, { useEffect, useState } from "react";
+import { supabase } from "../supabase-clients";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
+import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
+import { Link } from "react-router-dom";
+import "./Project.css";
 
-function Project({ user }) {   // ✅ accept user as a prop
-  const [selectedProject, setSelectedProject] = useState(null)
 
-  const projects = [
-    { img: Prof, title: "Professional Project", desc: "Description about Prof" },
-    { img: ProjImg, title: "Service Project", desc: "Description about Services5" },
-    { img: ProjImg4, title: "Building Project", desc: "Description about Building2" },
-    { img: ProjImg3, title: "Buildings", desc: "Description about Buildings" },
-    { img: ProjImg2, title: "Project Pic", desc: "Description about Projectspic" },
-    { img: AboutNew, title: "About Us", desc: "Description about AboutNew" },
-  ]
+
+// Local images for background services slider
+import ConsultationImage from "../Assets/consult.jpg";
+import PlanningImage from "../Assets/Service2.jpg";
+import DesignImage from "../Assets/Service3.jpg";
+import ImplementationImage from "../Assets/service6.jpg";
+import ReviewImage from "../Assets/Services5.jpg";
+import CompletionImage from "../Assets/Building2.jpg";
+
+function Project() {
+  const [projects, setProjects] = useState([]);
+
+  // Background services images
+  const services = [
+    { image: ConsultationImage },
+    { image: PlanningImage },
+    { image: DesignImage },
+    { image: ImplementationImage },
+    { image: ReviewImage },
+    { image: CompletionImage },
+  ];
+
+  useEffect(() => {
+    async function fetchImages() {
+      const { data, error } = await supabase.from("project_images").select("*");
+
+      if (error) {
+        console.error("Error fetching images:", error.message);
+        return;
+      }
+
+      // Attach public URL + new sequential id
+      const withUrls = data.map((row, index) => {
+        const { data: urlData } = supabase.storage
+          .from("project_images")
+          .getPublicUrl(row.url);
+
+        return {
+          ...row,
+          publicUrl: urlData.publicUrl,
+          newId: index + 1, // ✅ sequential ID starting at 1
+        };
+      });
+
+      setProjects(withUrls);
+    }
+
+    fetchImages();
+  }, []);
 
   return (
-    <div className="project-container">
-      <div className="project-text">
-        <h1>
-          In several years of working, We've worked on a variety of projects,
-          from residential buildings.
-        </h1>
+    <div className="project-section">
+      {/* === Services Background Slider === */}
+      <div className="services-section">
+        <div className="services-text">
+          <h2>Services & Projects We Have Done</h2>
+        </div>
+
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={0}
+          autoplay={{ delay: 3000 }}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
+          pagination={{ clickable: true }}
+          modules={[Pagination, Autoplay, EffectFade]}
+        >
+          {services.map((service, index) => (
+            <SwiperSlide key={index}>
+              <div
+                className="service-slide"
+                style={{ backgroundImage: `url(${service.image})` }}
+              ></div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
 
-      {/* ✅ Only admins see the Upload button */}
-      {user?.role === "admin" && (
-        <button className="upload-btn">Upload Image</button>
-      )}
+      {/* === Projects Carousel === */}
+      <div className="project-container">
+        <Swiper
+          modules={[Navigation]}
+          navigation
+          spaceBetween={20}
+          slidesPerView={3}
+          breakpoints={{
+            320: { slidesPerView: 1, spaceBetween: 20 },
+            640: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 20 },
+          }}
+          observer={true}
+          observeParents={true}
+          className="proj-img"
+        >
+          {projects.map((p) => (
+            <SwiperSlide key={p.newId}>
+              <div className="slide-card">
+                <img src={p.publicUrl} alt={p.title} className="carousel-img" />
+                <h3>{p.title}</h3>
+                <p>{p.description}</p>
 
-      {/* Carousel with arrows */}
-      <Swiper
-        modules={[Navigation]}
-        navigation
-        spaceBetween={20}
-        slidesPerView={3}
-        className="proj-img"
-      >
-        {projects.map((p, i) => (
-          <SwiperSlide key={i}>
-            <div className="slide-card">
-              <img src={p.img} alt={p.title} className="carousel-img" />
-              <h3>{p.title}</h3>
-              <button onClick={() => setSelectedProject(p)}>Learn More</button>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+                {/* ✅ use newId for the link */}
+                <Link to={`/projects/${p.newId}`}>
+                  <button>Learn More</button>
+                </Link>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-      {/* Modal popup */}
-      {selectedProject && (
-        <div className="modal-overlay" onClick={() => setSelectedProject(null)}>
-          <div
-            className="modal-content"
-            onClick={(e) => e.stopPropagation()} // prevent closing on content click
-          >
-            <img src={selectedProject.img} alt={selectedProject.title} />
-            <h2>{selectedProject.title}</h2>
-            <p>{selectedProject.desc}</p>
-            <button onClick={() => setSelectedProject(null)}>Close</button>
-          </div>
-        </div>
-      )}
+        <Link to="/upload">
+          <button className="bttn">Upload Project</button>
+        </Link>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Project
+export default Project;

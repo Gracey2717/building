@@ -1,0 +1,87 @@
+.project-details {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(to right, #fff2e0, #898ac4);
+  padding: 2rem;
+  max-width: 1200px; /* wider for desktop */
+  margin: 40px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-carousel {
+  margin-bottom: 2rem; /* extra space under carousel */
+}
+
+.project-carousel img {
+  width: 100%;
+  height: auto; /* responsive height */
+  max-height: 450px; /* keep large screens neat */
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+h1 {
+  margin: 1.5rem 0 0.5rem; /* more breathing room */
+  font-size: 2.2rem;
+  color: #222;
+}
+
+h3 {
+  color: #555;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.related-projects {
+  display: grid; /* switch to grid for better spacing */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.related-card {
+  text-align: center;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.related-card:hover {
+  transform: translateY(-5px); /* subtle hover effect */
+}
+
+.related-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+/* 📱 Mobile adjustments */
+@media (max-width: 768px) {
+  .project-details {
+    padding: 1rem;
+  }
+
+  .project-carousel img {
+    max-height: 300px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+}

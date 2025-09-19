@@ -22,8 +22,7 @@ function Services() {
     <div className="services-section">
       {/* ✨ One single text overlay */}
       <div className="services-text">
-        <h2>Our Services</h2>
-        <p>We offer a wide range of civil engineering services to meet your needs.</p>
+        <h2>We offer a wide range of civil engineering services to meet your needs.</h2>
       </div>
 
       {/* Background slider */}

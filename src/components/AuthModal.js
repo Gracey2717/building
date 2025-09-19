@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function AuthModal({ isOpen, onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [activeTab, setActiveTab] = useState("login"); // "login" | "signup"
   const navigate = useNavigate();
 
@@ -19,13 +20,18 @@ export default function AuthModal({ isOpen, onClose }) {
     }
   }
 
-  async function handleSignUp() {
-    const user = await signUp(email, password);
-    if (user) {
-      onClose();
-      navigate("/projects");
-    }
+async function handleSignUp() {
+  const user = await signUp(email, password);
+  if (user) {
+    setActiveTab("login");
+    setEmail("");
+    setPassword("");
+
+    // Add a friendly inline message
+    setMessage("✅ Sign up successful! Please log in to continue.");
   }
+}
+
 
   return (
     <div className="modal-overlay">
@@ -77,6 +83,8 @@ export default function AuthModal({ isOpen, onClose }) {
               Sign Up
             </button>
           )}
+          {message && <p className="success-msg">{message}</p>}
+
         </div>
       </div>
     </div>
